@@ -3,97 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Historical Interactive Map</title>
+  <title>Interactive Historical Map</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="project-part1.css" />
 </head>
 <body>
-  <h1>Explore Historical Events by Location</h1>
-  
   
   <header class="site-header">
-  <div class="header-top">
-    <h1><span class="highlight">🗺 Interactive Historical Map</span> — Europe Edition</h1>
-    <p class="subtitle">Discover key moments, battles, and landmarks across European history.</p>
-  </div>
-
-  <div class="header-bottom">
-    <div class="map-info">
-      <p><strong>Explore by clicking on hotspots</strong> or use the search bar to jump to a specific event. From revolutions to renaissances, history comes alive here!</p>
+    <div class="header-top">
+      <h1><span class="highlight">🗺 Interactive Historical Map</span></h1>
+      <p class="subtitle">Discover key moments, battles, and landmarks across European history.</p>
     </div>
-    <div class="search-bar">
-      <input type="text" placeholder="🔍 Search city or event..." />
-      <button type="button">Go</button>
-    </div>
-  </div>
-</header>
 
-  
-  
+    <div class="header-bottom">
+      <div class="map-info" style="max-width: 800px; text-align: center; margin-bottom: 20px;">
+         <p style="color: var(--text-light); font-size: 1.05rem; font-weight: 500;">
+           <strong>You can explore by clicking on hotspots</strong> or filter history using the timeline slider.
+         </p>
+      </div>
+      
+      <div class="timeline-control">
+          <label for="yearSlider">Year: <span id="yearDisplay">2000</span></label>
+          <input type="range" id="yearSlider" min="800" max="2000" value="2000" step="10">
+          <button type="button" onclick="resetTimeline()">Show All</button>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔎 Search events..." />
+        <button type="button" id="searchBtn">Search</button>
+      </div>
+    </div>
+  </header>
 
   <div class="map-container">
     <img src="europe-map.jpg" alt="Historical Map" class="map-image" />
-    <!-- Western Europe -->
-  <div class="map-point" style="top: 60%; left: 38%;" data-title="Battle of Waterloo" data-description="1815, Belgium — Ended Napoleon's rule."></div>
-  <div class="map-point" style="top: 70%; left: 35%;" data-title="French Revolution" data-description="1789–1799, France — Radical social and political upheaval."></div>
-<div class="map-point" style="top: 55%; left: 30%;" 
-     data-title="Norman Conquest"
-     data-description="1066, England — William the Conqueror defeated King Harold at the Battle of Hastings, reshaping English language, law, and aristocracy for centuries."></div>
-  <!-- Northern Europe -->
-<div class="map-point" style="top: 35%; left: 43%;" 
-     data-title="Viking Expansion"
-     data-description="8th–11th century, Scandinavia — The Viking Age saw Norse seafarers explore, raid, and trade across Europe, leaving a lasting cultural and genetic legacy. Their longships reached as far as North America and the Middle East."></div>
+    
+    <canvas id="historyCanvas"></canvas>
 
-  <!-- Central Europe -->
-  <div class="map-point" style="top: 62%; left: 45%;" data-title="Fall of the Berlin Wall" data-description="1989, Germany — Symbolized the end of the Cold War."></div>
-  <div class="map-point" style="top: 71%; left: 38%;" data-title="Treaty of Versailles" data-description="1919, France — Ended WWI and reshaped Europe."></div>
-<div class="map-point" style="top: 60%; left: 45%;" 
-     data-title="Martin Luther's 95 Theses"
-     data-description="1517, Germany — Luther's public challenge to the Catholic Church sparked the Protestant Reformation, altering religious and political landscapes across Europe."></div>
-  <!-- Eastern Europe -->
-  <div class="map-point" style="top: 40%; left: 80%;" data-title="Siege of Leningrad" data-description="1941–1944, Russia — One of the longest and most destructive sieges in history."></div>
-  <div class="map-point" style="top: 63%; left: 70%;" data-title="Chernobyl Disaster" data-description="1986, Ukraine — Nuclear accident with global impact."></div>
+    <div class="map-point" style="top: 60%; left: 38%;" 
+         data-title="Battle of Waterloo" 
+         data-description="Fought on Sunday, 18 June 1815, near Waterloo in Belgium, this battle marked the final defeat of Napoleon Bonaparte. It ended the Napoleonic Wars and established a long period of relative peace in Europe known as the Pax Britannica."
+         data-year="1815"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/7/72/Battle_of_Waterloo_1815.PNG"></div>
 
-  <!-- Southern Europe -->
-  <div class="map-point" style="top: 75%; left: 47%;" data-title="Renaissance in Florence" data-description="14th–17th century, Italy — Birthplace of the European Renaissance."></div>
-  <div class="map-point" style="top: 80%; left: 28%;" data-title="Spanish Civil War" data-description="1936–1939, Spain — Prelude to WWII and ideological conflict."></div>
+    <div class="map-point" style="top: 70%; left: 35%;" 
+         data-title="French Revolution" 
+         data-description="A period of radical political and societal change in France that began with the Estates General of 1789 and ended with the formation of the French Consulate in 1799. It overthrew the monarchy, established a republic, and sparked global decline of absolute monarchies."
+         data-year="1789"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/4/4e/Prise_de_la_Bastille.jpg"></div>
 
-  <!-- Southeastern Europe -->
-  <div class="map-point" style="top: 80%; left: 66%;" data-title="Fall of Constantinople" data-description="1453, Turkey — Marked the end of the Byzantine Empire."></div>
-  <div class="map-point" style="top: 68%; left: 62%;" data-title="Romanian Revolution" data-description="1989, Romania — Overthrew communist regime of Ceaușescu."></div>
-<div class="map-point" style="top: 75%; left: 62%;" 
-     data-title="Balkan Wars"
-     data-description="1912–1913, Balkans — A series of conflicts among Balkan states and the Ottoman Empire, setting the stage for World War I and reshaping regional borders."></div>
-   
-   
-   <!-- Bonus: Romania Spotlight -->
-<div class="map-point" style="top: 69%; left: 60%;" 
-     data-title="Union of Transylvania with Romania"
-     data-description="1918, Alba Iulia — Marked the unification of Transylvania with the Kingdom of Romania after World War I, celebrated as a cornerstone of Romanian national identity."></div>
+    <div class="map-point" style="top: 55%; left: 30%;" 
+         data-title="Norman Conquest" 
+         data-description="The 11th-century invasion and occupation of England by an army of Norman, Breton, and French soldiers led by Duke William II of Normandy. The victory at the Battle of Hastings (1066) resulted in profound changes to English language, law, and culture."
+         data-year="1066"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/b/bb/Bayeux_Tapestry_scene57_Harold_death.jpg"></div>
+
+    <div class="map-point" style="top: 35%; left: 43%;" 
+         data-title="Viking Expansion" 
+         data-description="From the late 8th to the late 11th centuries, Norse seafarers known as Vikings raided, traded, and settled across large parts of Europe, Asia, and the North Atlantic islands. They reached as far east as Constantinople and as far west as Newfoundland."
+         data-year="800"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/0/07/Oseberg_ship_head_post_2016-01.jpg"
+         data-altimage="viking-expansion.jpg"></div>
+
+    <div class="map-point" style="top: 62%; left: 45%;" 
+         data-title="Fall of the Berlin Wall" 
+         data-description="On November 9, 1989, the Berlin Wall, which had divided West Berlin from the communist East since 1961, was opened. The fall of the wall paved the way for German reunification and symbolized the collapse of the Iron Curtain and communism in Eastern Europe."
+         data-year="1989"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Berlinermauer.jpg/640px-Berlinermauer.jpg"></div>
+
+    <div class="map-point" style="top: 71%; left: 38%;" 
+         data-title="Treaty of Versailles" 
+         data-description="Signed in 1919, this peace treaty ended the state of war between Germany and the Allied Powers. It forced Germany to disarm, make substantial territorial concessions, and pay reparations, which many historians argue contributed to the rise of World War II."
+         data-year="1919"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Treaty_of_Versailles%2C_English_version.jpg/461px-Treaty_of_Versailles%2C_English_version.jpg"></div>
+
+    <div class="map-point" style="top: 60%; left: 45%;" 
+         data-title="Martin Luther's 95 Theses" 
+         data-description="In 1517, Martin Luther posted his Ninety-five Theses on the door of the All Saints' Church in Wittenberg. This act challenged the Catholic Church's practice of selling indulgences and sparked the Protestant Reformation, permanently dividing Western Christianity."
+         data-year="1517"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/9/93/Luther46c.jpg"
+         data-altimage="marthin-luther95.jpg"></div>
+
+    <div class="map-point" style="top: 40%; left: 80%;" 
+         data-title="Siege of Leningrad" 
+         data-description="A prolonged military blockade undertaken from the south by the Nazi German Army Group North against the Soviet city of Leningrad. It lasted 872 days (1941–1944) and resulted in the deaths of over 1 million civilians, mostly from starvation."
+         data-year="1941"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/c/c8/Siege_of_Leningrad_1941.jpg"
+         data-altimage="siege_leningrad.jpg"></div>
+
+    <div class="map-point" style="top: 63%; left: 70%;" 
+         data-title="Chernobyl Disaster" 
+         data-description="A catastrophic nuclear accident that occurred on 26 April 1986 at the No. 4 reactor in the Chernobyl Nuclear Power Plant. It is considered the worst nuclear disaster in history, releasing radioactive contamination across large parts of Europe."
+         data-year="1986"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Chernobyl_Reactor_4_1986.jpg/640px-Chernobyl_Reactor_4_1986.jpg"
+         data-altimage="cernobal.jpg"></div>
+
+    <div class="map-point" style="top: 75%; left: 47%;" 
+         data-title="Renaissance in Florence" 
+         data-description="Beginning in the 14th century, Florence became the cradle of the Renaissance. Fueled by the patronage of the Medici family, the city produced masters like Michelangelo, Da Vinci, and Botticelli, marking a transition from the Middle Ages to Modernity."
+         data-year="1400"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Florence_Duomo_from_Michelangelo_hill.jpg/640px-Florence_Duomo_from_Michelangelo_hill.jpg"
+         data-altimage="florenceren.jpg"></div>
+
+    <div class="map-point" style="top: 80%; left: 28%;" 
+         data-title="Spanish Civil War" 
+         data-description="Fought from 1936 to 1939 between the Republicans (loyal to the Second Spanish Republic) and the Nationalists (led by General Francisco Franco). It is often seen as a 'dress rehearsal' for World War II, involving foreign intervention from Nazi Germany and the Soviet Union."
+         data-year="1936"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Guernica_after_bombing.jpg/640px-Guernica_after_bombing.jpg"
+        data-altimage="spanish_war.jpg"></div>
+
+    <div class="map-point" style="top: 80%; left: 66%;" 
+         data-title="Fall of Constantinople" 
+         data-description="The capture of the capital of the Byzantine Empire by the Ottoman Empire in 1453. The fall of the city marked the end of the Roman Empire (which had lasted for nearly 1,500 years) and is often cited as the event that ended the Middle Ages."
+         data-year="1453"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Siege_of_Constantinople_1453.jpg/640px-Siege_of_Constantinople_1453.jpg"
+         data-altimage="fall-constantiopol.jpg"></div>
+
+    <div class="map-point" style="top: 68%; left: 62%;" 
+         data-title="Romanian Revolution" 
+         data-description="A period of violent civil unrest in December 1989 that led to the trial and execution of Communist leader Nicolae Ceaușescu. It was the only violent overthrow of a communist government during the Revolutions of 1989."
+         data-year="1989"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Bucharest_revolution_1989.jpg/640px-Bucharest_revolution_1989.jpg"
+         data-altimage="rom_rev.jpg"></div>
+
+    <div class="map-point" style="top: 75%; left: 62%;" 
+         data-title="Balkan Wars" 
+         data-description="Two conflicts that took place in the Balkans in 1912 and 1913. Four Balkan states defeated the Ottoman Empire in the first war, but fought each other in the second. The wars set the stage for the First World War by destabilizing the region."
+         data-year="1912"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Balkan_wars.jpg/640px-Balkan_wars.jpg"
+         data-altimage="balkan-war.jpg"></div>
+
+    <div class="map-point" style="top: 69%; left: 60%;" 
+         data-title="Great Union of 1918" 
+         data-description="On December 1, 1918, the National Assembly at Alba Iulia proclaimed the unification of Transylvania, Bessarabia, and Bukovina with the Romanian Kingdom. This event is celebrated today as the Great Union Day, Romania's national holiday."
+         data-year="1918"
+         data-image="https://upload.wikimedia.org/wikipedia/commons/e/e3/Adunarea_Nationala_de_la_Alba_Iulia_-_1_decembrie_1918.jpg"
+         data-altimage="1918_union.jpg"></div>
   </div>
 
   <div class="info-box" id="infoBox">
-    <h2 id="eventTitle"></h2>
-    <p id="eventDescription"></p>
-    <button onclick="closeInfo()">Close</button>
+    <img id="eventImage" src="" alt="Event Image">
+    
+    <div style="padding: 20px;">
+        <h2 id="eventTitle">Title</h2>
+        <p id="eventDescription">Description</p>
+        <button onclick="closeInfo()">Close</button>
+    </div>
   </div>
 
-  <script>
-    const points = document.querySelectorAll('.map-point');
-    const infoBox = document.getElementById('infoBox');
-    const title = document.getElementById('eventTitle');
-    const description = document.getElementById('eventDescription');
-
-    points.forEach(point => {
-      point.addEventListener('click', () => {
-        title.textContent = point.dataset.title;
-        description.textContent = point.dataset.description;
-        infoBox.style.display = 'block';
-      });
-    });
-
-    function closeInfo() {
-      infoBox.style.display = 'none';
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
